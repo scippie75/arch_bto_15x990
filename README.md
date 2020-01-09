@@ -5,11 +5,12 @@ Disclaimer: this document is Work In Progress. Do not use! I am not responsible 
 
 ## 4K high DPI and Archlinux Live Boot USB
 Installing in text mode on a 4K display is really hard, even with good eyes like mine. So the first thing to do to make the terminal font bigger is (see https://unix.stackexchange.com/questions/376082/archlinux-live-usb-on-hdpi-display?newreg=48d1aa4f04b24895bc4e2126f60afd37):
-# vim /etc/vconsole.conf
+
+    # vim /etc/vconsole.conf
 ```
 FONT=latarcyrheb-sun32
 ```
-# systemctl restart systemd-vconsole-setup
+    # systemctl restart systemd-vconsole-setup
 
 ## Graphics adapter
 This model has two graphics adapters, an Intel and an Nvidia. The Intel uses less power, the Nvidia has more functionality.

@@ -10,7 +10,7 @@
 import sys
 import subprocess
 
-display = subprocess.check_output("xrandr | grep primary | awk '{ print $1 }'", shell=True).decode('utf-8').strip()
+display = subprocess.check_output("xrandr | grep ' connected' | awk '{ print $1 }'", shell=True).decode('utf-8').strip()
 
 brightness = 1.0
 try:

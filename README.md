@@ -3,6 +3,14 @@ These are my installation instructions on installing Arch Linux with i3 on my BT
 
 Disclaimer: this document is Work In Progress. Do not use! I am not responsible for any damage or loss of business or profits or whatever. If you care about not breaking things: DO NOT USE! As I have noticed, things change a lot in time, so make sure you use the Arch Wiki as your guide!
 
+## 4K high DPI and Archlinux Live Boot USB
+Installing in text mode on a 4K display is really hard, even with good eyes like mine. So the first thing to do to make the terminal font bigger is (see https://unix.stackexchange.com/questions/376082/archlinux-live-usb-on-hdpi-display?newreg=48d1aa4f04b24895bc4e2126f60afd37):
+# vim /etc/vconsole.conf
+```
+FONT=latarcyrheb-sun32
+```
+# systemctl restart systemd-vconsole-setup
+
 ## Graphics adapter
 This model has two graphics adapters, an Intel and an Nvidia. The Intel uses less power, the Nvidia has more functionality.
 I don't really care about the power use, so I choose to always use the Nvidia card. If you do care, make sure you use Nvidia Optimus.
@@ -48,13 +56,6 @@ display-setup-script=/etc/lightdm/display_setup.sh
 ```
 
 ## 4K high DPI
-Installing in text mode on a 4K display is really hard, even with good eyes like mine. So the first thing to do to make the terminal font bigger is (see https://unix.stackexchange.com/questions/376082/archlinux-live-usb-on-hdpi-display?newreg=48d1aa4f04b24895bc4e2126f60afd37):
-# vim /etc/vconsole.conf
-```
-FONT=latarcyrheb-sun32
-```
-# systemctl restart systemd-vconsole-setup
-
 Not everything will work on Linux as there are too many possible standards used for different user interfaces. But most software is written with GTK2/3 and Qt5, and these can be configured for HiDPI. It is also possible to make GRUB readable.
 
 See https://wiki.archlinux.org/index.php/HiDPI

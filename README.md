@@ -11,3 +11,9 @@ Disclaimer: this document is Work In Progress. Do not use! I am not responsible 
 
 Reboot and the controls should work.
 
+## Change the brightness of the OLED screen
+This is impossible as an OLED screen no longer has a backlight. Every pixel is its own LED light, which looks great.
+There is a solution though: you can ask X to change the brightness of every pixel with xrandr.
+Lowering the brightness works as good and also saves power, just light it did with a backlight.
+
+Use the backlight.py script in this repository, bind it to your Fn-backlight keys (for example with +0.05 and -0.05 for up and down). Use its output value (is also shown without parameters) to show the current brightness on a status bar like i3blocks.

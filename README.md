@@ -47,6 +47,12 @@ And make sure it is called from /etc/lightdm/lightdm.conf
 display-setup-script=/etc/lightdm/display_setup.sh
 ```
 
+## 4K high DPI
+Not everything will work on Linux as there are too many possible standards used for different user interfaces. But most software is written with GTK2/3 and Qt5, and these can be configured for HiDPI. It is also possible to make GRUB readable.
+
+See https://wiki.archlinux.org/index.php/HiDPI
+
+
 ## Making the Clevo keyboard backlight work so you can at least use the Fn-button combinations and you are able to dim the backlight or even turn if off
 
   sudo vim /etc/default/grub
@@ -61,3 +67,10 @@ There is a solution though: you can ask X to change the brightness of every pixe
 Lowering the brightness works as good and also saves power, just light it did with a backlight.
 
 Use the backlight.py script in this repository, bind it to your Fn-backlight keys (for example with +0.05 and -0.05 for up and down). Use its output value (is also shown without parameters) to show the current brightness on a status bar like i3blocks.
+
+## Power management
+This is very important. I destroyed my battery on my other laptop by not having configured this correctly and draining the battery completely every time. It is important to configure that the system shuts down (or sleeps/hibernates) when the battery gets lower than say 10%. Somewhere below 10% is the really bad zone for batteries and it is said that it is best for batteries to be recharged when the reach < 50%.
+
+To configure this, see: https://wiki.archlinux.org/index.php/Power_management
+
+However, I just installed the package powerkit and started it with i3. Configuring it is easy.

@@ -48,6 +48,13 @@ display-setup-script=/etc/lightdm/display_setup.sh
 ```
 
 ## 4K high DPI
+Installing in text mode on a 4K display is really hard, even with good eyes like mine. So the first thing to do to make the terminal font bigger is (see https://unix.stackexchange.com/questions/376082/archlinux-live-usb-on-hdpi-display?newreg=48d1aa4f04b24895bc4e2126f60afd37):
+# vim /etc/vconsole.conf
+```
+FONT=latarcyrheb-sun32
+```
+# systemctl restart systemd-vconsole-setup
+
 Not everything will work on Linux as there are too many possible standards used for different user interfaces. But most software is written with GTK2/3 and Qt5, and these can be configured for HiDPI. It is also possible to make GRUB readable.
 
 See https://wiki.archlinux.org/index.php/HiDPI

@@ -176,6 +176,30 @@ Enable and start this service. Now the optimal power settings will be set after 
 
 If you have non-SSD disks in the laptop, further power-saving measures can be taken by slowing down writing cached data to disk, slowing down the spin-up rate of the motors, etc. See [https://wiki.archlinux.org/index.php/Power_management#Writeback_Time](Power Management, writeback time) and things around it.
 
+## Graphical environment
+
+### Set up intel+nvidia hybrid graphics
+
+If 32-bit (Steam) is needed, enable the [https://wiki.archlinux.org/index.php/Official_repositories#multilib](multilib repository).
+
+First install intel:
+
+    # pacman -Syu mesa lib32-mesa vulkan-intel
+    # pacman -Syu nvidia nvidia-prime nvidia-utils lib32-nvidia-utils
+    # pacman -Syu i3-gaps terminator lightdm lightdm-gtk-greeter i3status
+
+Actually, I didn't install lightdm-gtk-greeter, but chose for lightdm-slick-greeter (which works great on HiDPI screens), but this is only available in the AUR. This also makes it easy to immediately install other stuff from the AUR.
+    
+    # yay -Syu i3-gaps terminator lightdm lightdm-slick-greeter i3-scrot i3status
+
+You need to manually edit /etc/lightdm/lightdm.conf, adding this under the [Seat:*] section:
+
+    greeter-session=lightdm-slick-greeter
+
+To enable automatic HiDPI scaling in i3 and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like. For best results, it should be a multiple of 96 though.
+
+A good startup for an i3 config file is also in this repo (WIP) and must be copied to $HOME/.config/i3/config
+
 ## Very specific setup
 
 ### Create SSH tunnel with another computer
@@ -218,27 +242,12 @@ That's why I installed [https://aur.archlinux.org/packages/?O=0&K=yay](yay).
 
 From now on, you can just type yay instead of pacman. Yay will do everything pacman does (I don't know that for sure, but in the last 3 years that seemed to be the case for me) and will easily build and install AUR packages for you as well.
 
-## Graphical environment
+### Set keyboard repeat rate (for X11, not for TTY)
 
-### Set up intel+nvidia hybrid graphics
+I find the best location to do this is to do this as early as possible and as user-independant as possible. Some people might prefer to have different values for different users. In that case, do the command in a local startup file, this may even be the i3 config, but ~/.xinitrc is fine too.
 
-If 32-bit (Steam) is needed, enable the [https://wiki.archlinux.org/index.php/Official_repositories#multilib](multilib repository).
+Otherwise, create a file in /etc/X11/xinit/xinitrc.d/99-keyboard.sh
 
-First install intel:
-
-    # pacman -Syu mesa lib32-mesa vulkan-intel
-    # pacman -Syu nvidia nvidia-prime nvidia-utils lib32-nvidia-utils
-    # pacman -Syu i3-gaps terminator lightdm lightdm-gtk-greeter i3status
-
-Actually, I didn't install lightdm-gtk-greeter, but chose for lightdm-slick-greeter (which works great on HiDPI screens), but this is only available in the AUR. This also makes it easy to immediately install other stuff from the AUR.
-    
-    # yay -Syu i3-gaps terminator lightdm lightdm-slick-greeter i3-scrot i3status
-
-You need to manually edit /etc/lightdm/lightdm.conf, adding this under the [Seat:*] section:
-
-    greeter-session=lightdm-slick-greeter
-
-To enable automatic HiDPI scaling in i3 and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like. For best results, it should be a multiple of 96 though.
-
-A good startup for an i3 config file is also in this repo (WIP) and must be copied to $HOME/.config/i3/config
+    #!/bin/sh
+    /usr/bin/xset r rate 300 50
 

@@ -204,3 +204,38 @@ To make it a systemd service, let's create one, create the /etc/systemd/system/t
 We use dhcpcd.service as trigger to activate this service, but as it takes time for wifi to connect, this won't work in most situations and the service will fail. To make sure it is retried when the connection is up, we add the RestartSec=10sec and the Restart=on-failure pulseaudio alsa-utils pulseaudio-alsaparameters. These will make sure that the connection is retried after 10 seconds. This may even remove the autossh requirement, but I like autossh too much to remove it.
 
 Reboot and check after around 10 seconds: watch systemctl status tunnel.service
+
+### Yay
+
+As I like to use packages from the AUR, it's handy to have the comfort to install them easily in the same way as pacman works.
+That's why I installed [https://aur.archlinux.org/packages/?O=0&K=yay](yay).
+    # pacman -Syu git
+    # git clone https://aur.archlinux.org/yay.git
+    # cd yay
+    # makepkg -cris
+    # cd ..
+    # rm -rf yay
+
+From now on, you can just type yay instead of pacman. Yay will do everything pacman does (I don't know that for sure, but in the last 3 years that seemed to be the case for me) and will easily build and install AUR packages for you as well.
+
+## Graphical environment
+
+### Set up intel+nvidia hybrid graphics
+
+If 32-bit (Steam) is needed, enable the [https://wiki.archlinux.org/index.php/Official_repositories#multilib](multilib repository).
+
+First install intel:
+
+    # pacman -Syu mesa lib32-mesa vulkan-intel
+    # pacman -Syu nvidia nvidia-prime nvidia-utils lib32-nvidia-utils
+    # pacman -Syu i3-wm terminator lightdm lightdm-gtk-greeter
+
+Actually, I didn't install lightdm-gtk-greeter, but chose for lightdm-slick-greeter (which works great on HiDPI screens), but this is only available in the AUR.
+    
+    # yay -Syu i3-wm terminator lightdm lightdm-slick-greeter
+
+You need to manually edit /etc/lightdm/lightdm.conf, adding this under the [Seat:*] section:
+
+    greeter-session=lightdm-slick-greeter
+
+To enable automatic HiDPI scaling and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like.

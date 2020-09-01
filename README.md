@@ -135,3 +135,5 @@ To make it a systemd service, let's create one, create the /etc/systemd/system/t
     WantedBy=multi-user.target
     
 We use dhcpcd.service as trigger to activate this service, but as it takes time for wifi to connect, this won't work in most situations and the service will fail. To make sure it is retried when the connection is up, we add the RestartSec=10sec and the Restart=on-failure parameters. These will make sure that the connection is retried after 10 seconds. This may even remove the autossh requirement, but I like autossh too much to remove it.
+
+Reboot and check after around 10 seconds: watch systemctl status tunnel.service

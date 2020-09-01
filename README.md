@@ -246,7 +246,7 @@ From now on, you can just type yay instead of pacman. Yay will do everything pac
 
 I find the best location to do this is to do this as early as possible and as user-independant as possible. Some people might prefer to have different values for different users. In that case, do the command in a local startup file, this may even be the i3 config, but ~/.xinitrc is fine too.
 
-Otherwise, create a file in /etc/X11/xinit/xinitrc.d/99-keyboard.sh
+Otherwise, create a file in /etc/X11/xinit/xinitrc.d/99-keyboard.sh and make sure it is executable (chmod +x)
 
     #!/bin/sh
     /usr/bin/xset r rate 300 50

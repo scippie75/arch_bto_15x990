@@ -228,14 +228,17 @@ First install intel:
 
     # pacman -Syu mesa lib32-mesa vulkan-intel
     # pacman -Syu nvidia nvidia-prime nvidia-utils lib32-nvidia-utils
-    # pacman -Syu i3-wm terminator lightdm lightdm-gtk-greeter
+    # pacman -Syu i3-gaps terminator lightdm lightdm-gtk-greeter i3status
 
-Actually, I didn't install lightdm-gtk-greeter, but chose for lightdm-slick-greeter (which works great on HiDPI screens), but this is only available in the AUR.
+Actually, I didn't install lightdm-gtk-greeter, but chose for lightdm-slick-greeter (which works great on HiDPI screens), but this is only available in the AUR. This also makes it easy to immediately install other stuff from the AUR.
     
-    # yay -Syu i3-wm terminator lightdm lightdm-slick-greeter
+    # yay -Syu i3-gaps terminator lightdm lightdm-slick-greeter i3-scrot i3status
 
 You need to manually edit /etc/lightdm/lightdm.conf, adding this under the [Seat:*] section:
 
     greeter-session=lightdm-slick-greeter
 
 To enable automatic HiDPI scaling in i3 and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like. For best results, it should be a multiple of 96 though.
+
+A good startup for an i3 config file is also in this repo (WIP) and must be copied to $HOME/.config/i3/config
+

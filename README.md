@@ -174,6 +174,8 @@ You can there do all the recommendations by setting the BAD stuff to GOOD, but t
 
 Enable and start this service. Now the optimal power settings will be set after boot.
 
+If you have non-SSD disks in the laptop, further power-saving measures can be taken by slowing down writing cached data to disk, slowing down the spin-up rate of the motors, etc. See [https://wiki.archlinux.org/index.php/Power_management#Writeback_Time](Power Management, writeback time) and things around it.
+
 ## Very specific setup
 
 ### Create SSH tunnel with another computer

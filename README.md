@@ -238,4 +238,4 @@ You need to manually edit /etc/lightdm/lightdm.conf, adding this under the [Seat
 
     greeter-session=lightdm-slick-greeter
 
-To enable automatic HiDPI scaling and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like.
+To enable automatic HiDPI scaling in i3 and some other nice stuff I stole from Manjaro, copy the .Xresources file in this repository to your home folder. Change the Xft.dpi value on the first line to whatever dpi you like. For best results, it should be a multiple of 96 though.

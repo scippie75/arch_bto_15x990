@@ -109,7 +109,7 @@ Settings are stored in /var/lib/connman, so if you reboot, the network should st
 
 At this point of the guide, we will be looking at [General recommendations](https://wiki.archlinux.org/index.php/General_recommendations) which you should follow. You may want to do this for yourself and only look at the specific BTO things below.
 
-### SSD trimming
+### SSD periodic trimming
 
 You only need this if you have SSD disks, but in that case, you really should do it to make sure your disk stays usable.
     
@@ -121,7 +121,16 @@ You only need this if you have SSD disks, but in that case, you really should do
 
 Not at all necessary, but it is more fun in my opinion.
 
-    # pacman -Syu pulseaudio alsa-utils pulseaudio-alsa
+    # pacman -Syu pulseaudio alsa-utils pulseaudio-alsa bluez bluez-utils pulseaudio-bluetooth
+    # systemctl enable bluetooth.service
+    # systemctl start bluetooth.service
+
+For bluetooth support in pulseaudio, add the following lines to /etc/pulse/system.pa:
+    
+    load-module module-bluetooth-policy
+    load-module module-bluetooth-discover
+
+A reboot may be necessary
 
 ## Very specific setup
 

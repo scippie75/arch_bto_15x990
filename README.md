@@ -14,16 +14,29 @@ Boot the laptop with the USB. Booting in UEFI is just fine.
 The newer ISO supports 4K so you can read the text mode. If this is not the case for you, go to the [https://github.com/scippie75/arch_bto_15x990/blob/master/README-old.md](old instructions) for how to make your font bigger.
 
 You should just follow the guide, but here is what I did (if any of the steps below show an unexpected result, don't go further):
-    \# rfkill
+
+    # rfkill
     ...
     2 wlan phy0 unblocked unblocked
-    \# iwctl
+    # iwctl
     [iwd]# device list
     wlan0 ...
     [iwd]# station wlan0 scan
     [iwd]# station wlan0 get-networks
     ...
     [iwd]# station wlan0 connect \<SSID\>
-    \# ping archlinux.org
-    \# timedatectl set-ntp true
-    \# 
+    # ping archlinux.org
+    # timedatectl set-ntp true
+
+Partitioning, I keep up to you. This is a very personal thing. Make sure you have an EFI partition (of at least 100MB) and a Linux Filesystem partition. I don't make a swap partition because I feel I don't need it with 32GB of memory.
+
+    # mkfs.ext4 /dev/<linux filesystem partition>
+    # mount /dev/<linux filesystem partition> /mnt
+    # mkdir /mnt/efi
+    # mount /dev/<EFI partition> /mnt/efi
+
+You used to have to edit the mirrors list, but this is now generated and sorted automatically. Still though, it might be worth checking it out because this will be copied onto the new system.
+Now we will install the base and the linux kernel. It is up to you to choose the default kernel or go for a [https://wiki.archlinux.org/index.php/Kernel](different kernel). If you want stability, go for LTS.
+
+
+    # pacstrap /mnt base linux linux-firmware

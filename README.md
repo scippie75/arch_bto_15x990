@@ -36,7 +36,32 @@ Partitioning, I keep up to you. This is a very personal thing. Make sure you hav
     # mount /dev/<EFI partition> /mnt/efi
 
 You used to have to edit the mirrors list, but this is now generated and sorted automatically. Still though, it might be worth checking it out because this will be copied onto the new system.
-Now we will install the base and the linux kernel. It is up to you to choose the default kernel or go for a [https://wiki.archlinux.org/index.php/Kernel](different kernel). If you want stability, go for LTS.
+Now we will install the base and the linux kernel. It is up to you to choose the default kernel or go for a [https://wiki.archlinux.org/index.php/Kernel](different kernel). If you want stability, go for LTS. Because this is my leasure laptop, I go for the cutting edge latest kernel. I added some extras because I have a Windows partition as well. I also need WIFI so I add that too (warning, I want my network to be available in the console, even before one of the desktop managers kicks in, if that's not what you want, do some research)
 
+    # pacstrap /mnt base linux linux-firmware exfat-utils ntfs-3g dhcpcd connman wpa_supplicant bluez openvpn vim man-db man-pages texinfo
+    # genfstab -U /mnt >> /mnt/etc/fstab
+    # arch-chroot /mnt
+    # ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime
+    # hwclock --systohc
+    
+Edit /etc/locale.gen and uncomment en_US.UTF-8 UTF-8 and anything else you may need.
 
-    # pacstrap /mnt base linux linux-firmware
+    # locale-gen
+    # echo 'LANG=en_US.UTF-8' >/etc/locale.conf
+    # echo 'myhostname' >/etc/hostname
+    # echo '127.0.0.1	localhost' >/etc/hosts
+    # echo '::1		localhost' >>/etc/hosts
+    # echo '127.0.1.1	myhostname.localdomain	myhostname' >>/etc/hosts
+    # passwd
+    ...
+    
+## Boot loader
+
+Before you reboot, you must make sure you can reboot.
+    
+    # pacman -Syu grub efibootmgr
+    # grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+
+The BTO laptops use a Clevo keyboard and if you want the backlight buttons to work, you need some kernel parameters. Edit /etc/default/grub and add 'acpi_osi=!' 'acpi_osi=Linux' (without the quotes) to the GRUB_CMDLINE_LINUX_DEFAULT line. You can also add 'nouveau.modeset=0' if you are planning to use nvidia prime with nvidia nonfree driver later and want to make sure there are no conflicts with the nouveau driver.
+    
+    # grub-mkconfig -o /boot/grub/grub.cfg

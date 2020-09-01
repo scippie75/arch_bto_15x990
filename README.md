@@ -109,3 +109,29 @@ Settings are stored in /var/lib/connman, so if you reboot, the network should st
 
 At this point of the guide, we will be looking at [General recommendations](https://wiki.archlinux.org/index.php/General_recommendations) which you should follow. You may want to do this for yourself and only look at the specific BTO things below.
 
+## Very specific setup
+
+### Create SSH tunnel with another computer
+
+You should make sure to use a ssh public/private key pair. Create one specifically for a 'tunnel' user on the other computer and make sure that tunnel user has the least rights possible. Copy the private key to /root with a descriptive name.
+
+To make a stable tunnel, we will need autossh:
+
+    # pacman -Syu autossh
+    
+To make it a systemd service, let's create one, create the /etc/systemd/system/tunnel.service with the contents:
+
+    [Unit]
+    Description=AutoSSH Tunnel with h1p
+    After=dhcpcd.service
+    
+    [Service]
+    ExecStart=/usr/bin/autossh -M 0 -T -N -o 'ServerAliveInterval 30' -i /root/private-key-for-tunnel -L <port>:localhost:<port> ... tunnel@<server-ip>
+    ExecStop=killall -s KILL autossh
+    RestartSec=10sec
+    Restart=on-failure
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+We use dhcpcd.service as trigger to activate this service, but as it takes time for wifi to connect, this won't work in most situations and the service will fail. To make sure it is retried when the connection is up, we add the RestartSec=10sec and the Restart=on-failure parameters. These will make sure that the connection is retried after 10 seconds. This may even remove the autossh requirement, but I like autossh too much to remove it.

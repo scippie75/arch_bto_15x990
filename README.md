@@ -123,7 +123,7 @@ You should make sure to use a ssh public/private key pair. Create one specifical
 
 To make a stable tunnel, we will need autossh:
 
-    # pacman -Syu autossh
+    # pacman -Syu openssh autossh
     
 To make it a systemd service, let's create one, create the /etc/systemd/system/tunnel.service with the contents:
 

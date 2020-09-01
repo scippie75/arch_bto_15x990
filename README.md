@@ -109,6 +109,12 @@ Settings are stored in /var/lib/connman, so if you reboot, the network should st
 
 At this point of the guide, we will be looking at [General recommendations](https://wiki.archlinux.org/index.php/General_recommendations) which you should follow. You may want to do this for yourself and only look at the specific BTO things below.
 
+### Pulse audio
+
+Not at all necessary, but it is more fun in my opinion.
+
+    # pacman -Syu pulseaudio alsa-utils pulseaudio-alsa
+
 ## Very specific setup
 
 ### Create SSH tunnel with another computer

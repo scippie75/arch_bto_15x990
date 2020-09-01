@@ -59,9 +59,19 @@ Edit /etc/locale.gen and uncomment en_US.UTF-8 UTF-8 and anything else you may n
 
 Before you reboot, you must make sure you can reboot.
     
-    # pacman -Syu grub efibootmgr
+    # pacman -Syu grub efibootmgr os-prober
     # grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 
 The BTO laptops use a Clevo keyboard and if you want the backlight buttons to work, you need some kernel parameters. Edit /etc/default/grub and add 'acpi_osi=!' 'acpi_osi=Linux' (without the quotes) to the GRUB_CMDLINE_LINUX_DEFAULT line. You can also add 'nouveau.modeset=0' if you are planning to use nvidia prime with nvidia nonfree driver later and want to make sure there are no conflicts with the nouveau driver.
     
     # grub-mkconfig -o /boot/grub/grub.cfg
+
+See that your linux image is found. If you have a Windows partition and it is not found, you may have forgotten to install ntfs-3g and os-prober. Use pacman to install it now.
+
+    # exit
+    # reboot
+
+Remove the USB stick when the system reboots.
+
+## Setting up the WIFI
+

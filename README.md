@@ -81,3 +81,31 @@ One can argue whether you should now immediately create a user account and work 
 
 ## Setting up the WIFI
 
+    # systemctl enable connman
+    # systemctl start connman
+    # connmanctl technologies
+    
+This last command should now show your ethernet, bluetooth and wifi device and whether it is powered on. To power on the wifi:
+
+    # connmanctl enable wifi
+    
+Now you should be able to set up the wifi. If you use a protected network, you need the cli interface, otherwise it is possible to use commands directly on connmanctl.
+
+    # connmanctl
+    connmanctl> agent on
+    connmanctl> scan wifi
+    connmanctl> services
+    connmanctl> connect wifi_... (use tab completion to help you identify the right network)
+    connmanctl> quit
+    # connmanctl state
+    ... should show online
+    # ip a
+    ... should show that your wifi interface has an IP number
+    # ping archlinux.org
+    
+Settings are stored in /var/lib/connman, so if you reboot, the network should still be configured correctly. You may want to try it.
+
+## Installing the useful stuff
+
+At this point of the guide, we will be looking at [General recommendations](https://wiki.archlinux.org/index.php/General_recommendations) which you should follow. You may want to do this for yourself and only look at the specific BTO things below.
+

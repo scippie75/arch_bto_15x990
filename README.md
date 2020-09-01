@@ -132,6 +132,48 @@ For bluetooth support in pulseaudio, add the following lines to /etc/pulse/syste
 
 A reboot may be necessary
 
+### Conserving power
+
+You can conserve more power by setting /etc/tmpfiles.d/energy_performance_preference.conf
+
+    w /sys/devices/system/cpu/cpufreq/policy?/energy_performance_preference - - - - balance_power
+
+Save power on intel sound card, by setting /etc/modprobe.d/audio_powersave.conf
+
+    options snd_hda_intel power_save=1
+
+Save power with pulseaudio, edit /etc/pulse/system.pa and add (this may already be there):
+
+    load-module module-suspend-on-idle
+
+Saving power on bluetooth must be done manually:
+
+    # rfkill block bluetooth
+
+And you can disable it at boot in /etc/udev/rules.d/50-bluetooth.rules
+
+    # disable bluetooth
+    SUBSYSTEM=="rfkill", ATTR{type}=="bluetooth", ATTR{state}="0"
+
+You can study power usage even further by installing powertop
+
+    # pacman -Syu powertop
+    # powertop
+
+You can there do all the recommendations by setting the BAD stuff to GOOD, but this can be automated by creating a service for it. Put this in the file /etc/systemd/system/powertop.service
+
+    [Unit]
+    Description=Powertop tunings
+    
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/bin/powertop --auto-tune
+    
+    [Install]
+    WantedBy=multi-user.target    
+
+Enable and start this service. Now the optimal power settings will be set after boot.
+
 ## Very specific setup
 
 ### Create SSH tunnel with another computer

@@ -178,7 +178,63 @@ If you have non-SSD disks in the laptop, further power-saving measures can be ta
 
 ## Graphical environment
 
-### Set up intel+nvidia hybrid graphics
+### Set up graphics adapter(s)
+
+#### nvidia only (not using the hybrid graphics)
+
+This model has two graphics adapters, an Intel and an Nvidia. The Intel uses less power, the Nvidia has more performance. You can use both combined with Nvidia prime, but it currently has performance problems (lower performance on both adapters and problems with anti-aliasing on the Nvidia adapter).
+So if you only care about performance, not about power, this may be your preferred choice. Beware that the nvidia fan will spin up a lot though.
+
+If 32-bit (Steam) is needed, enable the [https://wiki.archlinux.org/index.php/Official_repositories#multilib](multilib repository).
+
+First install intel:
+
+    # pacman -Syu nvidia nvidia-prime nvidia-utils lib32-nvidia-utils
+    # pacman -Syu i3-gaps terminator lightdm lightdm-gtk-greeter i3status
+
+See https://wiki.archlinux.org/index.php/NVIDIA_Optimus for these instructions:
+
+Install the nvidia driver as instructed in the Arch Wiki and also install xorg-xrandr
+Save these settings to /etc/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf
+```
+Section "OutputClass"
+    Identifier "intel"
+    MatchDriver "i915"
+    Driver "modesetting"
+EndSection
+
+Section "OutputClass"
+    Identifier "nvidia"
+    MatchDriver "nvidia-drm"
+    Driver "nvidia"
+    Option "AllowEmptyInitialConfiguration"
+    Option "PrimaryGPU" "yes"
+    ModulePath "/usr/lib/nvidia/xorg"
+    ModulePath "/usr/lib/xorg/modules"
+EndSection
+```
+
+If you are not using a Display Manager, then add these lines to ~/.xinitrc
+```
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+```
+Otherwise, look up how to do this inside your Display Manager. If it is LightDM, then create the script /etc/lightdm/display_setup.sh
+```
+#!/bin/sh
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+```
+Make sure it is executable: sudo chmod +x /etc/lightdm/display_setup.sh
+And make sure it is called from /etc/lightdm/lightdm.conf
+```
+[Seat:*]
+display-setup-script=/etc/lightdm/display_setup.sh
+```
+
+#### intel+nvidia hybrid graphics
+
+If you want balanced power usage, low power and silent fan on normal usage, high power and noisy fan on heavier usage, but (currently) with always a penalty on both graphics adapters, you can use nvidia-prime.
 
 If 32-bit (Steam) is needed, enable the [https://wiki.archlinux.org/index.php/Official_repositories#multilib](multilib repository).
 

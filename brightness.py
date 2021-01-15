@@ -30,11 +30,12 @@ if len(sys.argv) == 2:
 
 brightness = max(0.0, min(1.0, brightness))
 
+with open('/home/dirk/.brightness', 'w') as f:
+  f.write(str(brightness))
+
 # subprocess.run(['xrandr', '--output', display, '--brightness', str(brightness)])
 subprocess.run(['killall', '-9', 'redshift'])
 subprocess.run(['redshift', '-m', 'randr:screen=' + display, '-P', '-l', '51.2735622:4.4381955', '-r', '-b', str(brightness)])
-
-with open('/home/dirk/.brightness', 'w') as f:
-  f.write(str(brightness))
+subprocess.run(['killall', '-USR1', 'i3status'])
 
 print(brightness)
